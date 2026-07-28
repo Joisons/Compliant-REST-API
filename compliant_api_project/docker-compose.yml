@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - api_data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:////app/data/compliant_api.db
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-CHANGE_ME_INSECURE_DEMO_SECRET_DO_NOT_USE_IN_PRODUCTION}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["streamlit", "run", "dashboard/streamlit_dashboard.py", "--server.address=0.0.0.0", "--server.port=8501"]
+    ports:
+      - "8501:8501"
+    volumes:
+      - api_data:/app/data
+    environment:
+      - API_BASE_URL=http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  api_data:
