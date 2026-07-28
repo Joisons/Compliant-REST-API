@@ -154,7 +154,3 @@ compliant_api_project/
 - **No secrets management.** `JWT_SECRET_KEY` is read from an environment variable with an insecure demo default; a real deployment should source it from a secrets manager and rotate it.
 - **No refresh tokens.** Access tokens simply expire after 30 minutes with no renewal flow; a production system would add a refresh-token pattern.
 - **Docker path unexecuted.** As noted above — reviewed but not run end-to-end in this environment.
-
-## License
-
-MIT — see `LICENSE`.
