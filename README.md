@@ -8,7 +8,7 @@ The paper argues that technical governance of a data engineering function is, in
 
 | Governance concern | Implementation |
 |---|---|
-| Who is allowed to do what | `app/core/rbac.py` — four roles, permissions declared per-route |
+| Who is allowed to do what | `app/core/rbac.py` four roles, permissions declared per-route |
 | Segregation of duties | AUDITOR has full read access but zero write access anywhere in the system |
 | Proving what happened, after the fact | `app/middleware/audit_logging.py` every request logged, including denials and rate-limit rejections |
 | Proving the log itself hasn't been altered | SHA-256 hash chain across log entries; `GET /api/v1/audit-logs/verify` |
